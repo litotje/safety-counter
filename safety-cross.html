@@ -163,26 +163,28 @@ body {
 .legend {
   position: absolute;
   bottom: 72px;
-  left: 0;
-  width: 1920px;
-  display: flex;
-  justify-content: space-evenly;
-  gap: 0;
+  left: 210px;
+  width: 1500px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 110px;
+  align-items: center;
   color: #ffffff;
   font-size: 24px;
 }
 
 .legend-item {
-  width: 420px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 26px;
   line-height: 1.15;
+  white-space: nowrap;
 }
 
 .legend-box {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border: 2px solid #ffffff;
   flex: 0 0 auto;
 }
