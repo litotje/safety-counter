@@ -72,7 +72,6 @@ body {
   height: 650px;
 }
 
-/* Dagvakjes */
 .day {
   position: absolute;
   width: 68px;
@@ -92,6 +91,11 @@ body {
   color: #111111;
 }
 
+.day.yellow {
+  background: #F9E547;
+  color: #111111;
+}
+
 .day.red {
   background: #ed1b35;
   color: #ffffff;
@@ -103,7 +107,7 @@ body {
 }
 
 /*
-  Compact Safety Cross:
+  Safety Cross:
        01 02
        03 04
        05 06
@@ -116,7 +120,7 @@ body {
          31
 */
 
-/* Bovenarm */
+/* Bovenste arm */
 .day-1 { left: 204px; top: 0px; }
 .day-2 { left: 272px; top: 0px; }
 
@@ -129,7 +133,7 @@ body {
 .day-7 { left: 204px; top: 204px; }
 .day-8 { left: 272px; top: 204px; }
 
-/* Middenarm */
+/* Middendeel */
 .day-9  { left: 0px;   top: 272px; }
 .day-10 { left: 68px;  top: 272px; }
 .day-11 { left: 136px; top: 272px; }
@@ -148,7 +152,7 @@ body {
 .day-23 { left: 408px; top: 340px; }
 .day-24 { left: 476px; top: 340px; }
 
-/* Onderarm */
+/* Onderste arm */
 .day-25 { left: 204px; top: 408px; }
 .day-26 { left: 272px; top: 408px; }
 
@@ -160,6 +164,7 @@ body {
 
 .day-31 { left: 204px; top: 612px; }
 
+/* Legenda */
 .legend {
   position: absolute;
   bottom: 72px;
@@ -193,12 +198,12 @@ body {
   background: #70bf50;
 }
 
-.legend-box.red {
-  background: #ed1b35;
+.legend-box.yellow {
+  background: #F9E547;
 }
 
-.legend-box.future {
-  background: #ffffff;
+.legend-box.red {
+  background: #ed1b35;
 }
 
 .legend small {
@@ -241,18 +246,18 @@ body {
     </div>
 
     <div class="legend-item">
-      <span class="legend-box red"></span>
+      <span class="legend-box yellow"></span>
       <span>
-        Incident<br>
-        <small>Incident</small>
+        Bijna-ongeval<br>
+        <small>Quasi-accident</small>
       </span>
     </div>
 
     <div class="legend-item">
-      <span class="legend-box future"></span>
+      <span class="legend-box red"></span>
       <span>
-        Toekomstige dag<br>
-        <small>Jour à venir</small>
+        Incident<br>
+        <small>Incident</small>
       </span>
     </div>
   </div>
@@ -265,8 +270,25 @@ body {
 </div>
 
 <script>
+/*
+  Rode dagen: incidenten.
+  month: januari = 0, februari = 1, maart = 2, april = 3,
+  mei = 4, juni = 5, juli = 6, augustus = 7, enzovoort.
+*/
 const incidentDays = [
   { year: 2026, month: 5, day: 13 }
+];
+
+/*
+  Gele dagen: bijna-ongevallen.
+  Voeg hier later manueel dagen toe.
+
+  Voorbeeld:
+  { year: 2026, month: 7, day: 20 }
+  = 20 augustus 2026.
+*/
+const nearMissDays = [
+  /* { year: 2026, month: 7, day: 20 } */
 ];
 
 const monthNames = [
@@ -277,6 +299,7 @@ const monthNames = [
 
 function scaleScreen() {
   const screen = document.getElementById("screen");
+
   const scale = Math.min(
     window.innerWidth / 1920,
     window.innerHeight / 1080
@@ -295,6 +318,14 @@ function isIncident(year, month, day) {
   });
 }
 
+function isNearMiss(year, month, day) {
+  return nearMissDays.some(function (nearMiss) {
+    return nearMiss.year === year &&
+      nearMiss.month === month &&
+      nearMiss.day === day;
+  });
+}
+
 function getDaysInMonth(year, month) {
   return new Date(year, month + 1, 0).getDate();
 }
@@ -304,7 +335,12 @@ function dayStatus(year, month, day) {
     return "red";
   }
 
+  if (isNearMiss(year, month, day)) {
+    return "yellow";
+  }
+
   const now = new Date();
+
   const today = new Date(
     now.getFullYear(),
     now.getMonth(),
@@ -375,6 +411,8 @@ renderCrosses();
 scaleScreen();
 
 window.addEventListener("resize", scaleScreen);
+
+/* Vernieuwt de dagstatus elke minuut. */
 setInterval(renderCrosses, 60000);
 </script>
 
