@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Safety Cross - 6 Months</title>
+<title>Safety Cross</title>
 <style>
 body {
   background: #003366;
@@ -18,51 +18,57 @@ body {
   margin: 0;
 }
 .header {
-  font-size: 5vw;
+  font-size: 4vw;
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
-.cross-container {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
-  max-width: 90vw;
-  margin: 0 auto;
-}
-.day {
-  width: 60px;
-  height: 60px;
-  background: #22c55e;
-  border-radius: 8px;
+.crosses-container {
   display: flex;
-  flex-direction: column;
+  gap: 30px;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.cross {
+  display: grid;
+  grid-template-columns: repeat(7, 50px);
+  grid-template-rows: repeat(7, 50px);
+  gap: 4px;
+}
+.cell {
+  width: 50px;
+  height: 50px;
+  background: #22c55e;
+  border-radius: 5px;
+  display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: bold;
+  color: white;
 }
-.day.red {
+.cell.red {
   background: #ef4444;
 }
-.day-number {
-  font-size: 18px;
-  margin-bottom: 2px;
+.cell.empty {
+  background: transparent;
 }
-.day-label {
-  font-size: 10px;
-  opacity: 0.8;
-}
-.month-label {
-  font-size: 20px;
-  font-weight: bold;
-  margin: 20px 0 10px 0;
+.cell.center {
+  background: #003366;
   color: #FFD700;
+  font-size: 14px;
 }
-.footer {
-  margin-top: 30px;
-  font-size: 18px;
-  font-style: italic;
-  opacity: 0.8;
+.month-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #FFD700;
+  margin-bottom: 15px;
+  text-align: center;
+}
+.cross-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .legend {
   margin-top: 30px;
@@ -82,13 +88,19 @@ body {
 }
 .legend-box.green { background: #22c55e; }
 .legend-box.red { background: #ef4444; }
+.footer {
+  margin-top: 20px;
+  font-size: 16px;
+  font-style: italic;
+  opacity: 0.8;
+}
 </style>
 </head>
 <body>
 
-<div class="header">🦺 SAFETY CROSS - 6 MONTHS</div>
+<div class="header">🦺 SAFETY CROSS - LAST 3 MONTHS</div>
 
-<div id="crossContainer" class="cross-container"></div>
+<div id="crossesContainer" class="crosses-container"></div>
 
 <div class="legend">
   <div class="legend-item">
@@ -104,21 +116,12 @@ body {
 <div class="footer">Every day without an accident is a team achievement</div>
 
 <script>
-// === CONFIGURATIE: Pas hier de accident days aan ===
+// === CONFIGURATIE: Pas hier accident dagen aan ===
 const accidentDays = [
-  // Voorbeeld: dag 15 van januari 2026 had een accident
-  // { year: 2026, month: 0, day: 15 },  // month: 0 = januari, 11 = december
+  // Voorbeeld: 15 januari 2026
+  // { year: 2026, month: 0, day: 15 },
 ];
 // ==========================================
-
-const months = [
-  { name: "JANUARY 2026", year: 2026, month: 0, days: 31 },
-  { name: "FEBRUARY 2026", year: 2026, month: 1, days: 28 },
-  { name: "MARCH 2026", year: 2026, month: 2, days: 31 },
-  { name: "APRIL 2026", year: 2026, month: 3, days: 30 },
-  { name: "MAY 2026", year: 2026, month: 4, days: 31 },
-  { name: "JUNE 2026", year: 2026, month: 5, days: 30 }
-];
 
 const dayLabels = ["M", "T", "W", "T", "F", "S", "S"];
 
@@ -128,59 +131,82 @@ function isAccidentDay(year, month, day) {
   );
 }
 
-function createCross() {
-  const container = document.getElementById('crossContainer');
-  container.innerHTML = '';
-  
-  // Day labels
-  dayLabels.forEach(label => {
-    const div = document.createElement('div');
-    div.className = 'day-label';
-    div.style.color = '#FFD700';
-    div.style.fontWeight = 'bold';
-    div.textContent = label;
-    container.appendChild(div);
-  });
-  
-  // Months
-  months.forEach(monthData => {
-    // Month label
-    const monthLabel = document.createElement('div');
-    monthLabel.className = 'month-label';
-    monthLabel.style.gridColumn = '1 / -1';
-    monthLabel.textContent = monthData.name;
-    container.appendChild(monthLabel);
-    
-    // Days
-    const firstDay = new Date(monthData.year, monthData.month, 1).getDay();
-    const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1; // Start on Monday
-    
-    // Empty cells before first day
-    for (let i = 0; i < adjustedFirstDay; i++) {
-      const empty = document.createElement('div');
-      container.appendChild(empty);
-    }
-    
-    // Actual days
-    for (let day = 1; day <= monthData.days; day++) {
-      const dayDiv = document.createElement('div');
-      dayDiv.className = 'day';
-      
-      if (isAccidentDay(monthData.year, monthData.month, day)) {
-        dayDiv.classList.add('red');
-      }
-      
-      dayDiv.innerHTML = `
-        <span class="day-number">${day}</span>
-      `;
-      
-      container.appendChild(dayDiv);
-    }
-  });
+function getDaysInMonth(year, month) {
+  return new Date(year, month + 1, 0).getDate();
 }
 
-createCross();
+function createCross(year, month) {
+  const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", 
+                      "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+  
+  const daysInMonth = getDaysInMonth(year, month);
+  const firstDay = new Date(year, month, 1).getDay();
+  const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
+  
+  let html = `
+    <div class="cross-wrapper">
+      <div class="month-title">${monthNames[month]} ${year}</div>
+      <div class="cross">
+  `;
+  
+  // Row 1: Day labels
+  dayLabels.forEach(label => {
+    html += `<div class="cell" style="color: #FFD700; background: #003366;">${label}</div>`;
+  });
+  
+  // Row 2-7: Days
+  let day = 1;
+  for (let row = 0; row < 6; row++) {
+    for (let col = 0; col < 7; col++) {
+      if ((row === 0 && col < adjustedFirstDay) || day > daysInMonth) {
+        html += `<div class="cell empty"></div>`;
+      } else if (day <= daysInMonth) {
+        const isAccident = isAccidentDay(year, month, day);
+        const className = isAccident ? 'cell red' : 'cell';
+        html += `<div class="${className}">${day}</div>`;
+        day++;
+      }
+    }
+  }
+  
+  html += `
+      </div>
+    </div>
+  `;
+  
+  return html;
+}
+
+function createSafetyCross() {
+  const today = new Date();
+  let currentMonth = today.getMonth();
+  let currentYear = today.getFullYear();
+  
+  const months = [];
+  
+  // Get last 3 months (current month + 2 months before)
+  for (let i = 2; i >= 0; i--) {
+    let month = currentMonth - i;
+    let year = currentYear;
+    
+    if (month < 0) {
+      month += 12;
+      year--;
+    }
+    
+    months.push({ year, month });
+  }
+  
+  const container = document.getElementById('crossesContainer');
+  container.innerHTML = months.map(m => createCross(m.year, m.month)).join('');
+}
+
+createSafetyCross();
+setInterval(createSafetyCross, 3600000); // Update every hour
 </script>
 
 </body>
 </html>
+  background: #003366;
+  color: #FFD700;
+  font-size:
