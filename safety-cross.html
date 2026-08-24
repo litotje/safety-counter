@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safety Cross - 6 Months</title>
+<style>
+body {
+  background: #003366;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+.header {
+  font-size: 5vw;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+.cross-container {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  max-width: 90vw;
+  margin: 0 auto;
+}
+.day {
+  width: 60px;
+  height: 60px;
+  background: #22c55e;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+.day.red {
+  background: #ef4444;
+}
+.day-number {
+  font-size: 18px;
+  margin-bottom: 2px;
+}
+.day-label {
+  font-size: 10px;
+  opacity: 0.8;
+}
+.month-label {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 20px 0 10px 0;
+  color: #FFD700;
+}
+.footer {
+  margin-top: 30px;
+  font-size: 18px;
+  font-style: italic;
+  opacity: 0.8;
+}
+.legend {
+  margin-top: 30px;
+  display: flex;
+  gap: 30px;
+  font-size: 16px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.legend-box {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+}
+.legend-box.green { background: #22c55e; }
+.legend-box.red { background: #ef4444; }
+</style>
+</head>
+<body>
+
+<div class="header">🦺 SAFETY CROSS - 6 MONTHS</div>
+
+<div id="crossContainer" class="cross-container"></div>
+
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-box green"></div>
+    <span>No Accidents</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-box red"></div>
+    <span>Accident Reported</span>
+  </div>
+</div>
+
+<div class="footer">Every day without an accident is a team achievement</div>
+
+<script>
+// === CONFIGURATIE: Pas hier de accident days aan ===
+const accidentDays = [
+  // Voorbeeld: dag 15 van januari 2026 had een accident
+  // { year: 2026, month: 0, day: 15 },  // month: 0 = januari, 11 = december
+];
+// ==========================================
+
+const months = [
+  { name: "JANUARY 2026", year: 2026, month: 0, days: 31 },
+  { name: "FEBRUARY 2026", year: 2026, month: 1, days: 28 },
+  { name: "MARCH 2026", year: 2026, month: 2, days: 31 },
+  { name: "APRIL 2026", year: 2026, month: 3, days: 30 },
+  { name: "MAY 2026", year: 2026, month: 4, days: 31 },
+  { name: "JUNE 2026", year: 2026, month: 5, days: 30 }
+];
+
+const dayLabels = ["M", "T", "W", "T", "F", "S", "S"];
+
+function isAccidentDay(year, month, day) {
+  return accidentDays.some(acc => 
+    acc.year === year && acc.month === month && acc.day === day
+  );
+}
+
+function createCross() {
+  const container = document.getElementById('crossContainer');
+  container.innerHTML = '';
+  
+  // Day labels
+  dayLabels.forEach(label => {
+    const div = document.createElement('div');
+    div.className = 'day-label';
+    div.style.color = '#FFD700';
+    div.style.fontWeight = 'bold';
+    div.textContent = label;
+    container.appendChild(div);
+  });
+  
+  // Months
+  months.forEach(monthData => {
+    // Month label
+    const monthLabel = document.createElement('div');
+    monthLabel.className = 'month-label';
+    monthLabel.style.gridColumn = '1 / -1';
+    monthLabel.textContent = monthData.name;
+    container.appendChild(monthLabel);
+    
+    // Days
+    const firstDay = new Date(monthData.year, monthData.month, 1).getDay();
+    const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1; // Start on Monday
+    
+    // Empty cells before first day
+    for (let i = 0; i < adjustedFirstDay; i++) {
+      const empty = document.createElement('div');
+      container.appendChild(empty);
+    }
+    
+    // Actual days
+    for (let day = 1; day <= monthData.days; day++) {
+      const dayDiv = document.createElement('div');
+      dayDiv.className = 'day';
+      
+      if (isAccidentDay(monthData.year, monthData.month, day)) {
+        dayDiv.classList.add('red');
+      }
+      
+      dayDiv.innerHTML = `
+        <span class="day-number">${day}</span>
+      `;
+      
+      container.appendChild(dayDiv);
+    }
+  });
+}
+
+createCross();
+</script>
+
+</body>
+</html>
