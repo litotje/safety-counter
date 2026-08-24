@@ -67,12 +67,11 @@
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-20px); }
   }
-  /* Milestone background kleuren */
-  .milestone-100 { background-color: #006400 !important; }
-  .milestone-200 { background-color: #006494 !important; }
-  .milestone-300 { background-color: #8B0000 !important; }
-  .milestone-400 { background-color: #4B0082 !important; }
-  .milestone-500 { background-color: #8B4513 !important; }
+  .milestone-50 { background-color: #006400 !important; }
+  .milestone-100 { background-color: #006494 !important; }
+  .milestone-150 { background-color: #8B0000 !important; }
+  .milestone-200 { background-color: #4B0082 !important; }
+  .milestone-250 { background-color: #8B4513 !important; }
 </style>
 </head>
 <body>
@@ -86,16 +85,14 @@
 <div class="clock" id="liveClock">00:00</div>
 
 <script>
-  // === CONFIGURATIE: pas hier de startdatum aan ===
-  const accidentDate = new Date('2026-01-12T00:00:00');
-  // ===============================================
+  const accidentDate = new Date('2026-01-01T00:00:00');
 
   const milestoneMessages = {
-    100: "🎉 100 DAYS! WELL DONE TEAM! 🎉",
-    200: "🏆 200 DAYS! INCREDIBLE ACHIEVEMENT! 🏆",
-    300: "⭐ 300 DAYS! WORLD CLASS SAFETY! ⭐",
-    400: "👏 400 DAYS! OUTSTANDING COMMITMENT! 👏",
-    500: "🌟 500 DAYS! LEGENDARY SAFETY RECORD! 🌟"
+    50: "🎉 50 DAYS! GREAT START TEAM! 🎉",
+    100: "🏆 100 DAYS! WELL DONE! 🏆",
+    150: "⭐ 150 DAYS! KEEP IT UP! ⭐",
+    200: "👏 200 DAYS! AMAZING! 👏",
+    250: "🌟 250 DAYS! INCREDIBLE! 🌟"
   };
 
   function checkMilestone(days) {
@@ -103,23 +100,20 @@
     const message = document.getElementById('milestoneMessage');
     const body = document.body;
     
-    // Verwijder alle milestone classes
-    body.classList.remove('milestone-100', 'milestone-200', 'milestone-300', 'milestone-400', 'milestone-500');
+    body.classList.remove('milestone-50', 'milestone-100', 'milestone-150', 'milestone-200', 'milestone-250');
     
-    // Check of het een milestone is (elke 100 dagen)
-    if (days > 0 && days % 100 === 0) {
+    if (days > 0 && days % 50 === 0) {
       trophy.style.display = 'block';
       message.style.display = 'block';
       
-      // Specifieke boodschap voor bekende milestones
       if (milestoneMessages[days]) {
         message.innerText = milestoneMessages[days];
       } else {
-        message.innerText = `🎊 ${days} DAYS! AMAZING TEAM EFFORT! 🎊`;
+        message.innerText = "🎊 " + days + " DAYS! TEAM ACHIEVEMENT! 🎊";
       }
       
-      // Voeg speciale achtergrondkleur toe
-      body.classList.add(`milestone-${Math.min(Math.floor(days/100)*100, 500)}`);
+      const milestoneClass = 'milestone-' + Math.min(Math.floor(days/50)*50, 250);
+      body.classList.add(milestoneClass);
     } else {
       trophy.style.display = 'none';
       message.style.display = 'none';
@@ -131,8 +125,6 @@
     const diffTime = now - accidentDate;
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     document.getElementById('daysCounter').innerText = diffDays;
-    
-    // Check op milestones
     checkMilestone(diffDays);
   }
 
