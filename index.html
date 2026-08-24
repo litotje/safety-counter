@@ -16,13 +16,22 @@ body {
   justify-content: center;
   align-items: center;
   margin: 0;
+  transition: background 0.5s ease;
 }
 .counter { font-size: 15vw; font-weight: bold; }
-.milestone { font-size: 4vw; color: gold; font-weight: bold; margin-top: 20px; }
+.milestone { font-size: 4vw; color: gold; font-weight: bold; margin-top: 20px; min-height: 60px; }
 .header { font-size: 5vw; font-weight: bold; margin-bottom: 10px; }
 .subheader { font-size: 3vw; margin-bottom: 20px; }
 .footer { font-size: 2vw; margin-top: 30px; font-style: italic; }
 .clock { position: absolute; bottom: 20px; right: 30px; font-size: 3vw; }
+
+/* Milestone achtergrondkleuren */
+.ms-50 { background: #006400 !important; }
+.ms-100 { background: #006494 !important; }
+.ms-150 { background: #8B0000 !important; }
+.ms-200 { background: #4B0082 !important; }
+.ms-250 { background: #8B4513 !important; }
+.ms-300 { background: #2F4F4F !important; }
 </style>
 </head>
 <body>
@@ -35,7 +44,16 @@ body {
 <div class="clock" id="clock">00:00</div>
 
 <script>
-const startDate = new Date('2026-02-05T00:00:00');
+const startDate = new Date('2026-06-13T00:00:00');
+
+const messages = {
+  50: "🎉 50 DAYS! GREAT START TEAM! 🎉",
+  100: "🏆 100 DAYS! WELL DONE! 🏆",
+  150: "⭐ 150 DAYS! KEEP IT UP! ⭐",
+  200: "👏 200 DAYS! AMAZING! 👏",
+  250: "🌟 250 DAYS! INCREDIBLE! 🌟",
+  300: "🎊 300 DAYS! LEGENDARY! 🎊"
+};
 
 function update() {
   const today = new Date();
@@ -43,12 +61,24 @@ function update() {
   
   document.getElementById('counter').textContent = days;
   
-  if (days % 50 === 0 && days > 0) {
-    document.getElementById('milestone').textContent = '🎉 ' + days + ' DAYS! AWESOME TEAM! 🎉';
-  } else {
-    document.getElementById('milestone').textContent = '';
+  // Check op milestone (elke 50 dagen)
+  if (days > 0 && days % 50 === 0) {
+    const msDiv = document.getElementById('milestone');
+    
+    // Tekst tonen
+    if (messages[days]) {
+      msDiv.textContent = messages[days];
+    } else {
+      msDiv.textContent = "🎊 " + days + " DAYS! TEAM ACHIEVEMENT! 🎊";
+    }
+    
+    // Achtergrondkleur
+    document.body.classList.remove('ms-50', 'ms-100', 'ms-150', 'ms-200', 'ms-250', 'ms-300');
+    const msClass = 'ms-' + Math.min(Math.floor(days / 50) * 50, 300);
+    document.body.classList.add(msClass);
   }
   
+  // Klok
   const hours = String(today.getHours()).padStart(2, '0');
   const minutes = String(today.getMinutes()).padStart(2, '0');
   document.getElementById('clock').textContent = hours + ':' + minutes;
