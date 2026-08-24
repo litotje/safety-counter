@@ -18,16 +18,15 @@ body {
   margin: 0;
 }
 .header {
-  font-size: 4vw;
+  font-size: 3vw;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 .crosses-container {
   display: flex;
-  gap: 40px;
+  gap: 20px;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
 }
 .cross-wrapper {
   display: flex;
@@ -35,26 +34,26 @@ body {
   align-items: center;
 }
 .month-title {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
   color: #FFD700;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   text-align: center;
 }
 .cross {
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: 180px;
+  height: 180px;
 }
 .segment {
   position: absolute;
-  width: 36px;
-  height: 36px;
-  border-radius: 5px;
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
+  font-size: 10px;
   font-weight: bold;
   color: white;
   transform: translate(-50%, -50%);
@@ -70,31 +69,31 @@ body {
   color: #003366;
 }
 .segment.today {
-  border: 3px solid #FFD700;
+  border: 2px solid #FFD700;
   box-sizing: border-box;
 }
 .legend {
-  margin-top: 30px;
+  margin-top: 20px;
   display: flex;
-  gap: 30px;
-  font-size: 16px;
+  gap: 20px;
+  font-size: 12px;
 }
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
 }
 .legend-box {
-  width: 30px;
-  height: 30px;
-  border-radius: 5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
 }
 .legend-box.green { background: #22c55e; }
 .legend-box.red { background: #ef4444; }
 .legend-box.white { background: #ffffff; }
 .footer {
-  margin-top: 20px;
-  font-size: 16px;
+  margin-top: 15px;
+  font-size: 12px;
   font-style: italic;
   opacity: 0.8;
 }
@@ -113,22 +112,20 @@ body {
   </div>
   <div class="legend-item">
     <div class="legend-box red"></div>
-    <span>Accident Reported</span>
+    <span>Accident</span>
   </div>
   <div class="legend-item">
     <div class="legend-box white"></div>
-    <span>Future Days</span>
+    <span>Future</span>
   </div>
 </div>
 
 <div class="footer">Every day without an accident is a team achievement</div>
 
 <script>
-// === CONFIGURATIE: Pas hier accident dagen aan ===
 const accidentDays = [
-  { year: 2026, month: 5, day: 13 },  // 13 juni 2026
+  { year: 2026, month: 5, day: 13 },
 ];
-// ==========================================
 
 function isAccidentDay(year, month, day) {
   return accidentDays.some(acc => 
@@ -155,32 +152,26 @@ function createCross(year, month) {
       <div class="cross">
   `;
   
-  const centerX = 150;
-  const centerY = 150;
-  const armLength = 110;
-  const spacing = 40;
+  const centerX = 90;
+  const centerY = 90;
+  const spacing = 24;
   
   for (let day = 1; day <= daysInMonth; day++) {
     let x, y;
     
     if (day <= 7) {
-      // Top arm (vertical, going up)
       x = centerX;
       y = centerY - spacing * (7 - day);
     } else if (day <= 14) {
-      // Right arm (horizontal, going right)
       x = centerX + spacing * (day - 7);
       y = centerY;
     } else if (day <= 21) {
-      // Bottom arm (vertical, going down)
       x = centerX;
       y = centerY + spacing * (day - 14);
     } else if (day <= 28) {
-      // Left arm (horizontal, going left)
       x = centerX - spacing * (day - 21);
       y = centerY;
     } else {
-      // Extra days (29-31) - center area
       const extra = day - 28;
       x = centerX + spacing * (extra - 2);
       y = centerY + spacing;
