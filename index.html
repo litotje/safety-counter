@@ -17,61 +17,13 @@
     align-items: center;
     height: 100vh;
     text-align: center;
-    transition: background-color 0.5s ease;
   }
-  .header {
-    font-size: 4vw;
-    font-weight: bold;
-    margin-bottom: 2vh;
-  }
-  .subheader {
-    font-size: 2.5vw;
-    margin-bottom: 3vh;
-    font-weight: normal;
-  }
-  .counter {
-    font-size: 12vw;
-    font-weight: bold;
-    line-height: 1;
-    margin: 2vh 0;
-  }
-  .milestone-message {
-    font-size: 3vw;
-    margin-top: 2vh;
-    font-weight: bold;
-    color: #FFD700;
-    animation: pulse 2s infinite;
-  }
-  .footer {
-    font-size: 2vw;
-    margin-top: 3vh;
-    font-style: italic;
-  }
-  .clock {
-    position: absolute;
-    bottom: 2vh;
-    right: 3vw;
-    font-size: 2.5vw;
-    font-weight: bold;
-  }
-  .trophy {
-    font-size: 8vw;
-    margin: 2vh 0;
-    animation: bounce 1.5s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-  }
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-  }
-  .milestone-50 { background-color: #006400 !important; }
-  .milestone-100 { background-color: #006494 !important; }
-  .milestone-150 { background-color: #8B0000 !important; }
-  .milestone-200 { background-color: #4B0082 !important; }
-  .milestone-250 { background-color: #8B4513 !important; }
+  .header { font-size: 4vw; font-weight: bold; margin-bottom: 2vh; }
+  .subheader { font-size: 2.5vw; margin-bottom: 3vh; }
+  .counter { font-size: 12vw; font-weight: bold; line-height: 1; margin: 2vh 0; }
+  .milestone { font-size: 3vw; color: #FFD700; font-weight: bold; margin-top: 2vh; }
+  .footer { font-size: 2vw; margin-top: 3vh; font-style: italic; }
+  .clock { position: absolute; bottom: 2vh; right: 3vw; font-size: 2.5vw; }
 </style>
 </head>
 <body>
@@ -79,53 +31,26 @@
 <div class="header">🦺 SAFETY FIRST</div>
 <div class="subheader">DAYS WITHOUT AN ACCIDENT</div>
 <div class="counter" id="daysCounter">0</div>
-<div class="trophy" id="trophyIcon" style="display: none;">🏆</div>
-<div class="milestone-message" id="milestoneMessage" style="display: none;"></div>
+<div class="milestone" id="milestoneText"></div>
 <div class="footer">Every day. Every person. Every job.</div>
 <div class="clock" id="liveClock">00:00</div>
 
 <script>
   const accidentDate = new Date('2026-01-01T00:00:00');
 
-  const milestoneMessages = {
-    50: "🎉 50 DAYS! GREAT START TEAM! 🎉",
-    100: "🏆 100 DAYS! WELL DONE! 🏆",
-    150: "⭐ 150 DAYS! KEEP IT UP! ⭐",
-    200: "👏 200 DAYS! AMAZING! 👏",
-    250: "🌟 250 DAYS! INCREDIBLE! 🌟"
-  };
-
-  function checkMilestone(days) {
-    const trophy = document.getElementById('trophyIcon');
-    const message = document.getElementById('milestoneMessage');
-    const body = document.body;
-    
-    body.classList.remove('milestone-50', 'milestone-100', 'milestone-150', 'milestone-200', 'milestone-250');
-    
-    if (days > 0 && days % 50 === 0) {
-      trophy.style.display = 'block';
-      message.style.display = 'block';
-      
-      if (milestoneMessages[days]) {
-        message.innerText = milestoneMessages[days];
-      } else {
-        message.innerText = "🎊 " + days + " DAYS! TEAM ACHIEVEMENT! 🎊";
-      }
-      
-      const milestoneClass = 'milestone-' + Math.min(Math.floor(days/50)*50, 250);
-      body.classList.add(milestoneClass);
-    } else {
-      trophy.style.display = 'none';
-      message.style.display = 'none';
-    }
-  }
-
   function updateCounter() {
     const now = new Date();
     const diffTime = now - accidentDate;
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
     document.getElementById('daysCounter').innerText = diffDays;
-    checkMilestone(diffDays);
+    
+    // Check elke 50 dagen
+    if (diffDays > 0 && diffDays % 50 === 0) {
+      document.getElementById('milestoneText').innerText = "🎉 " + diffDays + " DAYS! GREAT JOB TEAM! 🎉";
+    } else {
+      document.getElementById('milestoneText').innerText = "";
+    }
   }
 
   function updateClock() {
