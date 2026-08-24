@@ -24,51 +24,53 @@ body {
 }
 .crosses-container {
   display: flex;
-  gap: 30px;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-.cross {
-  display: grid;
-  grid-template-columns: repeat(7, 50px);
-  grid-template-rows: repeat(7, 50px);
-  gap: 4px;
-}
-.cell {
-  width: 50px;
-  height: 50px;
-  background: #22c55e;
-  border-radius: 5px;
-  display: flex;
+  gap: 40px;
   justify-content: center;
   align-items: center;
-  font-size: 18px;
-  font-weight: bold;
-  color: white;
-}
-.cell.red {
-  background: #ef4444;
-}
-.cell.empty {
-  background: transparent;
-}
-.cell.center {
-  background: #003366;
-  color: #FFD700;
-  font-size: 14px;
-}
-.month-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #FFD700;
-  margin-bottom: 15px;
-  text-align: center;
+  flex-wrap: wrap;
 }
 .cross-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.month-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #FFD700;
+  margin-bottom: 15px;
+  text-align: center;
+}
+.cross {
+  position: relative;
+  width: 280px;
+  height: 280px;
+}
+.segment {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  transform: translate(-50%, -50%);
+}
+.segment.green {
+  background: #22c55e;
+}
+.segment.red {
+  background: #ef4444;
+}
+.segment.white {
+  background: #ffffff;
+  color: #003366;
+}
+.segment.today {
+  border: 3px solid #FFD700;
 }
 .legend {
   margin-top: 30px;
@@ -84,10 +86,11 @@ body {
 .legend-box {
   width: 30px;
   height: 30px;
-  border-radius: 5px;
+  border-radius: 50%;
 }
 .legend-box.green { background: #22c55e; }
 .legend-box.red { background: #ef4444; }
+.legend-box.white { background: #ffffff; }
 .footer {
   margin-top: 20px;
   font-size: 16px;
@@ -111,6 +114,10 @@ body {
     <div class="legend-box red"></div>
     <span>Accident Reported</span>
   </div>
+  <div class="legend-item">
+    <div class="legend-box white"></div>
+    <span>Future Days</span>
+  </div>
 </div>
 
 <div class="footer">Every day without an accident is a team achievement</div>
@@ -118,12 +125,10 @@ body {
 <script>
 // === CONFIGURATIE: Pas hier accident dagen aan ===
 const accidentDays = [
-  // Voorbeeld: 15 januari 2026
-  // { year: 2026, month: 0, day: 15 },
+  // Voorbeeld: 20 augustus 2026
+  // { year: 2026, month: 7, day: 20 },
 ];
 // ==========================================
-
-const dayLabels = ["M", "T", "W", "T", "F", "S", "S"];
 
 function isAccidentDay(year, month, day) {
   return accidentDays.some(acc => 
@@ -136,12 +141,13 @@ function getDaysInMonth(year, month) {
 }
 
 function createCross(year, month) {
-  const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", 
-                      "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+  const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", 
+                      "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
   
   const daysInMonth = getDaysInMonth(year, month);
-  const firstDay = new Date(year, month, 1).getDay();
-  const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
+  const today = new Date();
+  const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
+  const todayDay = today.getDate();
   
   let html = `
     <div class="cross-wrapper">
@@ -149,24 +155,30 @@ function createCross(year, month) {
       <div class="cross">
   `;
   
-  // Row 1: Day labels
-  dayLabels.forEach(label => {
-    html += `<div class="cell" style="color: #FFD700; background: #003366;">${label}</div>`;
-  });
+  const centerX = 140;
+  const centerY = 140;
+  const radius = 100;
+  const startAngle = -90; // Start at top (12 o'clock)
   
-  // Row 2-7: Days
-  let day = 1;
-  for (let row = 0; row < 6; row++) {
-    for (let col = 0; col < 7; col++) {
-      if ((row === 0 && col < adjustedFirstDay) || day > daysInMonth) {
-        html += `<div class="cell empty"></div>`;
-      } else if (day <= daysInMonth) {
-        const isAccident = isAccidentDay(year, month, day);
-        const className = isAccident ? 'cell red' : 'cell';
-        html += `<div class="${className}">${day}</div>`;
-        day++;
-      }
+  for (let day = 1; day <= daysInMonth; day++) {
+    const angle = startAngle + (360 / daysInMonth) * (day - 1);
+    const radian = angle * Math.PI / 180;
+    const x = centerX + radius * Math.cos(radian);
+    const y = centerY + radius * Math.sin(radian);
+    
+    let className = 'segment';
+    
+    if (isAccidentDay(year, month, day)) {
+      className += ' red';
+    } else if (isCurrentMonth && day > todayDay) {
+      className += ' white';
+    } else if (isCurrentMonth && day === todayDay) {
+      className += ' green today';
+    } else {
+      className += ' green';
     }
+    
+    html += `<div class="${className}" style="left: ${x}px; top: ${y}px;">${day}</div>`;
   }
   
   html += `
@@ -202,11 +214,8 @@ function createSafetyCross() {
 }
 
 createSafetyCross();
-setInterval(createSafetyCross, 3600000); // Update every hour
+setInterval(createSafetyCross, 3600000);
 </script>
 
 </body>
 </html>
-  background: #003366;
-  color: #FFD700;
-  font-size:
