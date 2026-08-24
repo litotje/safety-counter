@@ -1,230 +1,336 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Safety Cross</title>
+
 <style>
-body {
-  background: #003366;
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-}
-.header {
-  font-size: 3vw;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-.crosses-container {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-}
-.cross-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.month-title {
-  font-size: 16px;
-  font-weight: bold;
-  color: #FFD700;
-  margin-bottom: 10px;
-  text-align: center;
-}
-.cross {
-  position: relative;
-  width: 180px;
-  height: 180px;
-}
-.segment {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  border-radius: 3px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 10px;
-  font-weight: bold;
-  color: white;
-  transform: translate(-50%, -50%);
-}
-.segment.green {
-  background: #22c55e;
-}
-.segment.red {
-  background: #ef4444;
-}
-.segment.white {
-  background: #ffffff;
-  color: #003366;
-}
-.segment.today {
-  border: 2px solid #FFD700;
+* {
   box-sizing: border-box;
 }
-.legend {
-  margin-top: 20px;
-  display: flex;
-  gap: 20px;
-  font-size: 12px;
+
+body {
+  margin: 0;
+  padding: 16px;
+  background: #ffffff;
+  color: #111111;
+  font-family: Arial, Helvetica, sans-serif;
 }
+
+.page-title {
+  text-align: center;
+  font-size: clamp(20px, 3vw, 42px);
+  margin: 0 0 16px;
+  font-weight: 700;
+}
+
+.crosses {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(12px, 2vw, 32px);
+  width: 100%;
+}
+
+.month-card {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 430px;
+}
+
+.month-title {
+  text-align: center;
+  font-size: clamp(14px, 1.8vw, 26px);
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.cross-area {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+/* Elk vakje is absoluut geplaatst om de echte kruisvorm te maken. */
+.day {
+  position: absolute;
+  width: 12.5%;
+  height: 12.5%;
+  border: 1px solid #777777;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  color: #111111;
+  font-size: clamp(11px, 1.5vw, 24px);
+  font-weight: 700;
+}
+
+/* Groen: gepasseerde dag zonder incident */
+.day.green {
+  background: #70bf50;
+}
+
+/* Rood: incident */
+.day.red {
+  background: #ed1b35;
+  color: #ffffff;
+}
+
+/* Wit: dag die nog moet komen */
+.day.future {
+  background: #ffffff;
+}
+
+/*
+  Kruisindeling op een raster van 8 x 8:
+
+       01 02
+       03 04
+       05 06
+       07 08
+  09 10 11 12 13 14 15 16
+  17 18 19 20 21 22 23 24
+       25 26
+       27 28
+       29 30
+         31
+*/
+
+/* Bovenste arm */
+.day-1  { left: 37.5%; top: 0%; }
+.day-2  { left: 50%;   top: 0%; }
+.day-3  { left: 37.5%; top: 12.5%; }
+.day-4  { left: 50%;   top: 12.5%; }
+.day-5  { left: 37.5%; top: 25%; }
+.day-6  { left: 50%;   top: 25%; }
+.day-7  { left: 37.5%; top: 37.5%; }
+.day-8  { left: 50%;   top: 37.5%; }
+
+/* Horizontale middenarm */
+.day-9  { left: 0%;    top: 50%; }
+.day-10 { left: 12.5%; top: 50%; }
+.day-11 { left: 25%;   top: 50%; }
+.day-12 { left: 37.5%; top: 50%; }
+.day-13 { left: 50%;   top: 50%; }
+.day-14 { left: 62.5%; top: 50%; }
+.day-15 { left: 75%;   top: 50%; }
+.day-16 { left: 87.5%; top: 50%; }
+
+.day-17 { left: 0%;    top: 62.5%; }
+.day-18 { left: 12.5%; top: 62.5%; }
+.day-19 { left: 25%;   top: 62.5%; }
+.day-20 { left: 37.5%; top: 62.5%; }
+.day-21 { left: 50%;   top: 62.5%; }
+.day-22 { left: 62.5%; top: 62.5%; }
+.day-23 { left: 75%;   top: 62.5%; }
+.day-24 { left: 87.5%; top: 62.5%; }
+
+/* Onderste arm */
+.day-25 { left: 37.5%; top: 75%; }
+.day-26 { left: 50%;   top: 75%; }
+.day-27 { left: 37.5%; top: 87.5%; }
+.day-28 { left: 50%;   top: 87.5%; }
+.day-29 { left: 37.5%; top: 100%; }
+.day-30 { left: 50%;   top: 100%; }
+.day-31 {
+  left: 37.5%;
+  top: 112.5%;
+}
+
+/* Ruimte onder de kruisen */
+.legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 34px;
+  font-size: clamp(11px, 1.3vw, 18px);
+}
+
 .legend-item {
   display: flex;
   align-items: center;
   gap: 6px;
 }
+
 .legend-box {
-  width: 20px;
-  height: 20px;
-  border-radius: 3px;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #777777;
 }
-.legend-box.green { background: #22c55e; }
-.legend-box.red { background: #ef4444; }
-.legend-box.white { background: #ffffff; }
-.footer {
-  margin-top: 15px;
-  font-size: 12px;
-  font-style: italic;
-  opacity: 0.8;
+
+.legend-box.green {
+  background: #70bf50;
+}
+
+.legend-box.red {
+  background: #ed1b35;
+}
+
+.legend-box.future {
+  background: #ffffff;
+}
+
+.info {
+  text-align: center;
+  margin-top: 12px;
+  font-size: clamp(11px, 1.3vw, 18px);
 }
 </style>
 </head>
+
 <body>
 
-<div class="header">🦺 SAFETY CROSS - LAST 3 MONTHS</div>
+<h1 class="page-title">SAFETY CROSS — 3 MAANDEN</h1>
 
-<div id="crossesContainer" class="crosses-container"></div>
+<div id="crosses" class="crosses"></div>
 
 <div class="legend">
   <div class="legend-item">
-    <div class="legend-box green"></div>
-    <span>No Accidents</span>
+    <span class="legend-box green"></span>
+    <span>Geen incident</span>
   </div>
+
   <div class="legend-item">
-    <div class="legend-box red"></div>
-    <span>Accident</span>
+    <span class="legend-box red"></span>
+    <span>Incident</span>
   </div>
+
   <div class="legend-item">
-    <div class="legend-box white"></div>
-    <span>Future</span>
+    <span class="legend-box future"></span>
+    <span>Toekomstige dag</span>
   </div>
 </div>
 
-<div class="footer">Every day without an accident is a team achievement</div>
+<div class="info">
+  Elke gepasseerde dag zonder incident wordt automatisch groen.
+</div>
 
 <script>
-const accidentDays = [
-  { year: 2026, month: 5, day: 13 },
+/*
+  Incidenten invoeren:
+  maand: januari = 0, februari = 1, ..., juni = 5, augustus = 7
+
+  Voorbeeld hieronder:
+  13 juni 2026 = month: 5, day: 13
+*/
+const incidentDays = [
+  {
+    year: 2026,
+    month: 5,
+    day: 13
+  }
 ];
 
-function isAccidentDay(year, month, day) {
-  return accidentDays.some(acc => 
-    acc.year === year && acc.month === month && acc.day === day
-  );
+const monthNames = [
+  "januari", "februari", "maart", "april",
+  "mei", "juni", "juli", "augustus",
+  "september", "oktober", "november", "december"
+];
+
+function isIncident(year, month, day) {
+  return incidentDays.some(function (incident) {
+    return (
+      incident.year === year &&
+      incident.month === month &&
+      incident.day === day
+    );
+  });
 }
 
 function getDaysInMonth(year, month) {
   return new Date(year, month + 1, 0).getDate();
 }
 
-function createCross(year, month) {
-  const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", 
-                      "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-  
+function getThreeMonths() {
+  const today = new Date();
+  const result = [];
+
+  for (let offset = 2; offset >= 0; offset--) {
+    const date = new Date(
+      today.getFullYear(),
+      today.getMonth() - offset,
+      1
+    );
+
+    result.push({
+      year: date.getFullYear(),
+      month: date.getMonth()
+    });
+  }
+
+  return result;
+}
+
+function dayStatus(year, month, day) {
+  if (isIncident(year, month, day)) {
+    return "red";
+  }
+
+  const today = new Date();
+  const currentDate = new Date(year, month, day);
+  const todayDate = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  );
+
+  if (currentDate > todayDate) {
+    return "future";
+  }
+
+  return "green";
+}
+
+function createMonth(year, month) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "month-card";
+
+  const title = document.createElement("div");
+  title.className = "month-title";
+  title.textContent = monthNames[month] + " " + year;
+
+  const area = document.createElement("div");
+  area.className = "cross-area";
+
   const daysInMonth = getDaysInMonth(year, month);
-  const today = new Date();
-  const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
-  const todayDay = today.getDate();
-  
-  let html = `
-    <div class="cross-wrapper">
-      <div class="month-title">${monthNames[month]} ${year}</div>
-      <div class="cross">
-  `;
-  
-  const centerX = 90;
-  const centerY = 90;
-  const spacing = 24;
-  
+
   for (let day = 1; day <= daysInMonth; day++) {
-    let x, y;
-    
-    if (day <= 7) {
-      x = centerX;
-      y = centerY - spacing * (7 - day);
-    } else if (day <= 14) {
-      x = centerX + spacing * (day - 7);
-      y = centerY;
-    } else if (day <= 21) {
-      x = centerX;
-      y = centerY + spacing * (day - 14);
-    } else if (day <= 28) {
-      x = centerX - spacing * (day - 21);
-      y = centerY;
-    } else {
-      const extra = day - 28;
-      x = centerX + spacing * (extra - 2);
-      y = centerY + spacing;
-    }
-    
-    let className = 'segment';
-    
-    if (isAccidentDay(year, month, day)) {
-      className += ' red';
-    } else if (isCurrentMonth && day > todayDay) {
-      className += ' white';
-    } else if (isCurrentMonth && day === todayDay) {
-      className += ' green today';
-    } else {
-      className += ' green';
-    }
-    
-    html += `<div class="${className}" style="left: ${x}px; top: ${y}px;">${day}</div>`;
+    const box = document.createElement("div");
+
+    box.className =
+      "day day-" + day + " " + dayStatus(year, month, day);
+
+    box.textContent = day;
+    box.title = day + " " + monthNames[month] + " " + year;
+
+    area.appendChild(box);
   }
-  
-  html += `
-      </div>
-    </div>
-  `;
-  
-  return html;
+
+  wrapper.appendChild(title);
+  wrapper.appendChild(area);
+
+  return wrapper;
 }
 
-function createSafetyCross() {
-  const today = new Date();
-  let currentMonth = today.getMonth();
-  let currentYear = today.getFullYear();
-  
-  const months = [];
-  
-  for (let i = 2; i >= 0; i--) {
-    let month = currentMonth - i;
-    let year = currentYear;
-    
-    if (month < 0) {
-      month += 12;
-      year--;
-    }
-    
-    months.push({ year, month });
-  }
-  
-  const container = document.getElementById('crossesContainer');
-  container.innerHTML = months.map(m => createCross(m.year, m.month)).join('');
+function render() {
+  const container = document.getElementById("crosses");
+  container.innerHTML = "";
+
+  getThreeMonths().forEach(function (item) {
+    container.appendChild(createMonth(item.year, item.month));
+  });
 }
 
-createSafetyCross();
-setInterval(createSafetyCross, 3600000);
+render();
+
+/*
+  Om 00:01 automatisch van dagkleur te veranderen.
+*/
+setInterval(render, 60000);
 </script>
 
 </body>
