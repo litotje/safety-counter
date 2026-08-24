@@ -15,32 +15,49 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 0;
 }
 .counter { font-size: 15vw; font-weight: bold; }
 .milestone { font-size: 4vw; color: gold; font-weight: bold; margin-top: 20px; }
+.header { font-size: 5vw; font-weight: bold; margin-bottom: 10px; }
+.subheader { font-size: 3vw; margin-bottom: 20px; }
+.footer { font-size: 2vw; margin-top: 30px; font-style: italic; }
+.clock { position: absolute; bottom: 20px; right: 30px; font-size: 3vw; }
 </style>
 </head>
 <body>
 
-<h1>🦺 SAFETY FIRST</h1>
-<p>DAYS WITHOUT AN ACCIDENT</p>
+<div class="header">🦺 SAFETY FIRST</div>
+<div class="subheader">DAYS WITHOUT AN ACCIDENT</div>
 <div class="counter" id="counter">0</div>
 <div class="milestone" id="milestone"></div>
+<div class="footer">Every day. Every person. Every job.</div>
+<div class="clock" id="clock">00:00</div>
 
 <script>
-const startDate = new Date('2026-01-01');
-const today = new Date();
-const days = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+const startDate = new Date('2026-01-01T00:00:00');
 
-document.getElementById('counter').textContent = days;
-
-if (days % 50 === 0 && days > 0) {
-  document.getElementById('milestone').textContent = '🎉 ' + days + ' DAYS! AWESOME! 🎉';
-} else {
-  document.getElementById('milestone').textContent = '';
+function update() {
+  const today = new Date();
+  const days = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+  
+  document.getElementById('counter').textContent = days;
+  
+  if (days % 50 === 0 && days > 0) {
+    document.getElementById('milestone').textContent = '🎉 ' + days + ' DAYS! AWESOME TEAM! 🎉';
+  } else {
+    document.getElementById('milestone').textContent = '';
+  }
+  
+  const hours = String(today.getHours()).padStart(2, '0');
+  const minutes = String(today.getMinutes()).padStart(2, '0');
+  document.getElementById('clock').textContent = hours + ':' + minutes;
+  
+  console.log('Days:', days, '| Milestone:', days % 50 === 0);
 }
 
-console.log('Days:', days, 'Milestone?', days % 50 === 0);
+update();
+setInterval(update, 60000);
 </script>
 
 </body>
