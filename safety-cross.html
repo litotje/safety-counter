@@ -13,8 +13,8 @@
 body {
   margin: 0;
   padding: 16px;
-  background: #ffffff;
-  color: #111111;
+  background: #003366;
+  color: #ffffff;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -45,15 +45,16 @@ body {
   font-weight: 700;
   margin-bottom: 8px;
   text-transform: uppercase;
+  color: #FFD700;
 }
 
 .cross-area {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
+  margin-bottom: 70px;
 }
 
-/* Elk vakje is absoluut geplaatst om de echte kruisvorm te maken. */
 .day {
   position: absolute;
   width: 12.5%;
@@ -68,24 +69,23 @@ body {
   font-weight: 700;
 }
 
-/* Groen: gepasseerde dag zonder incident */
 .day.green {
   background: #70bf50;
+  color: #111111;
 }
 
-/* Rood: incident */
 .day.red {
   background: #ed1b35;
   color: #ffffff;
 }
 
-/* Wit: dag die nog moet komen */
 .day.future {
   background: #ffffff;
+  color: #111111;
 }
 
 /*
-  Kruisindeling op een raster van 8 x 8:
+  Kruisindeling:
 
        01 02
        03 04
@@ -99,7 +99,7 @@ body {
          31
 */
 
-/* Bovenste arm */
+/* Bovenste deel van het kruis */
 .day-1  { left: 37.5%; top: 0%; }
 .day-2  { left: 50%;   top: 0%; }
 .day-3  { left: 37.5%; top: 12.5%; }
@@ -109,7 +109,7 @@ body {
 .day-7  { left: 37.5%; top: 37.5%; }
 .day-8  { left: 50%;   top: 37.5%; }
 
-/* Horizontale middenarm */
+/* Middenstuk van het kruis */
 .day-9  { left: 0%;    top: 50%; }
 .day-10 { left: 12.5%; top: 50%; }
 .day-11 { left: 25%;   top: 50%; }
@@ -128,25 +128,22 @@ body {
 .day-23 { left: 75%;   top: 62.5%; }
 .day-24 { left: 87.5%; top: 62.5%; }
 
-/* Onderste arm */
+/* Onderste deel van het kruis */
 .day-25 { left: 37.5%; top: 75%; }
 .day-26 { left: 50%;   top: 75%; }
 .day-27 { left: 37.5%; top: 87.5%; }
 .day-28 { left: 50%;   top: 87.5%; }
 .day-29 { left: 37.5%; top: 100%; }
 .day-30 { left: 50%;   top: 100%; }
-.day-31 {
-  left: 37.5%;
-  top: 112.5%;
-}
+.day-31 { left: 37.5%; top: 112.5%; }
 
-/* Ruimte onder de kruisen */
 .legend {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 18px;
   margin-top: 34px;
+  color: #ffffff;
   font-size: clamp(11px, 1.3vw, 18px);
 }
 
@@ -159,7 +156,7 @@ body {
 .legend-box {
   width: 18px;
   height: 18px;
-  border: 1px solid #777777;
+  border: 1px solid #ffffff;
 }
 
 .legend-box.green {
@@ -177,7 +174,9 @@ body {
 .info {
   text-align: center;
   margin-top: 12px;
+  color: #ffffff;
   font-size: clamp(11px, 1.3vw, 18px);
+  opacity: 0.9;
 }
 </style>
 </head>
@@ -211,18 +210,13 @@ body {
 
 <script>
 /*
-  Incidenten invoeren:
-  maand: januari = 0, februari = 1, ..., juni = 5, augustus = 7
+  Incidenten toevoegen:
+  month: januari = 0, februari = 1, ..., juni = 5, augustus = 7.
 
-  Voorbeeld hieronder:
-  13 juni 2026 = month: 5, day: 13
+  13 juni 2026 staat hieronder reeds als incident.
 */
 const incidentDays = [
-  {
-    year: 2026,
-    month: 5,
-    day: 13
-  }
+  { year: 2026, month: 5, day: 13 }
 ];
 
 const monthNames = [
@@ -271,6 +265,7 @@ function dayStatus(year, month, day) {
   }
 
   const today = new Date();
+
   const currentDate = new Date(year, month, day);
   const todayDate = new Date(
     today.getFullYear(),
@@ -327,9 +322,7 @@ function render() {
 
 render();
 
-/*
-  Om 00:01 automatisch van dagkleur te veranderen.
-*/
+/* Controleert elke minuut of een nieuwe dag is begonnen. */
 setInterval(render, 60000);
 </script>
 
