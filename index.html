@@ -1,70 +1,20 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Days Without Accident</title>
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    background-color: #003366;
-    color: #ffffff;
-    font-family: 'Arial', sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-  }
-  .header { font-size: 4vw; font-weight: bold; margin-bottom: 2vh; }
-  .subheader { font-size: 2.5vw; margin-bottom: 3vh; }
-  .counter { font-size: 12vw; font-weight: bold; line-height: 1; margin: 2vh 0; }
-  .milestone { font-size: 3vw; color: #FFD700; font-weight: bold; margin-top: 2vh; }
-  .footer { font-size: 2vw; margin-top: 3vh; font-style: italic; }
-  .clock { position: absolute; bottom: 2vh; right: 3vw; font-size: 2.5vw; }
-</style>
+<title>Test</title>
 </head>
 <body>
-
-<div class="header">🦺 SAFETY FIRST</div>
-<div class="subheader">DAYS WITHOUT AN ACCIDENT</div>
-<div class="counter" id="daysCounter">0</div>
-<div class="milestone" id="milestoneText"></div>
-<div class="footer">Every day. Every person. Every job.</div>
-<div class="clock" id="liveClock">00:00</div>
-
+<h1>HELLO WORLD!</h1>
+<p>Als je dit ziet, werkt GitHub Pages!</p>
+<p id="test">DAYS: 0</p>
 <script>
   const accidentDate = new Date('2026-01-01T00:00:00');
-
-  function updateCounter() {
-    const now = new Date();
-    const diffTime = now - accidentDate;
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    
-    document.getElementById('daysCounter').innerText = diffDays;
-    
-    // Check elke 50 dagen
-    if (diffDays > 0 && diffDays % 50 === 0) {
-      document.getElementById('milestoneText').innerText = "🎉 " + diffDays + " DAYS! GREAT JOB TEAM! 🎉";
-    } else {
-      document.getElementById('milestoneText').innerText = "";
-    }
-  }
-
-  function updateClock() {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    document.getElementById('liveClock').innerText = hours + ':' + minutes;
-  }
-
-  updateCounter();
-  updateClock();
-  setInterval(updateCounter, 60000);
-  setInterval(updateClock, 1000);
+  const now = new Date();
+  const diffTime = now - accidentDate;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  document.getElementById('test').innerText = "DAYS: " + diffDays;
+  console.log("Days calculated:", diffDays);
 </script>
-
 </body>
 </html>
