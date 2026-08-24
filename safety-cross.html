@@ -10,67 +10,80 @@
   box-sizing: border-box;
 }
 
+html,
 body {
+  width: 100%;
+  height: 100%;
   margin: 0;
-  padding: 16px;
+  overflow: hidden;
   background: #003366;
-  color: #ffffff;
   font-family: Arial, Helvetica, sans-serif;
 }
 
+#screen {
+  width: 1920px;
+  height: 1080px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  background: #003366;
+  color: #ffffff;
+}
+
 .page-title {
+  position: absolute;
+  top: 38px;
+  left: 0;
+  width: 1920px;
+  margin: 0;
   text-align: center;
-  font-size: clamp(20px, 3vw, 42px);
-  margin: 0 0 16px;
+  font-size: 48px;
   font-weight: 700;
 }
 
 .crosses {
+  position: absolute;
+  top: 125px;
+  left: 55px;
+  width: 1810px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-start;
-  gap: clamp(12px, 2vw, 32px);
-  width: 100%;
 }
 
 .month-card {
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: 430px;
+  width: 550px;
+  height: 720px;
 }
 
 .month-title {
+  height: 46px;
   text-align: center;
-  font-size: clamp(14px, 1.8vw, 26px);
-  font-weight: 700;
-  margin-bottom: 8px;
-  text-transform: uppercase;
   color: #FFD700;
+  font-size: 30px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
-/*
-  Extra ruimte onder elk kruis:
-  dag 31 staat op top: 112.5%, dus valt onder het oorspronkelijke vlak.
-  Deze marge zet de legenda duidelijk lager.
-*/
 .cross-area {
   position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  margin-bottom: 190px;
+  width: 550px;
+  height: 650px;
 }
 
+/* Dagvakjes */
 .day {
   position: absolute;
-  width: 12.5%;
-  height: 12.5%;
-  border: 1px solid #777777;
+  width: 68px;
+  height: 68px;
+  border: 2px solid #777777;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #ffffff;
   color: #111111;
-  font-size: clamp(11px, 1.5vw, 24px);
+  font-size: 26px;
   font-weight: 700;
 }
 
@@ -90,8 +103,7 @@ body {
 }
 
 /*
-  Safety Cross-indeling:
-
+  Compact Safety Cross:
        01 02
        03 04
        05 06
@@ -104,65 +116,74 @@ body {
          31
 */
 
-/* Bovenste deel */
-.day-1  { left: 37.5%; top: 0%; }
-.day-2  { left: 50%;   top: 0%; }
-.day-3  { left: 37.5%; top: 12.5%; }
-.day-4  { left: 50%;   top: 12.5%; }
-.day-5  { left: 37.5%; top: 25%; }
-.day-6  { left: 50%;   top: 25%; }
-.day-7  { left: 37.5%; top: 37.5%; }
-.day-8  { left: 50%;   top: 37.5%; }
+/* Bovenarm */
+.day-1 { left: 204px; top: 0px; }
+.day-2 { left: 272px; top: 0px; }
 
-/* Horizontale middendeel */
-.day-9  { left: 0%;    top: 50%; }
-.day-10 { left: 12.5%; top: 50%; }
-.day-11 { left: 25%;   top: 50%; }
-.day-12 { left: 37.5%; top: 50%; }
-.day-13 { left: 50%;   top: 50%; }
-.day-14 { left: 62.5%; top: 50%; }
-.day-15 { left: 75%;   top: 50%; }
-.day-16 { left: 87.5%; top: 50%; }
+.day-3 { left: 204px; top: 68px; }
+.day-4 { left: 272px; top: 68px; }
 
-.day-17 { left: 0%;    top: 62.5%; }
-.day-18 { left: 12.5%; top: 62.5%; }
-.day-19 { left: 25%;   top: 62.5%; }
-.day-20 { left: 37.5%; top: 62.5%; }
-.day-21 { left: 50%;   top: 62.5%; }
-.day-22 { left: 62.5%; top: 62.5%; }
-.day-23 { left: 75%;   top: 62.5%; }
-.day-24 { left: 87.5%; top: 62.5%; }
+.day-5 { left: 204px; top: 136px; }
+.day-6 { left: 272px; top: 136px; }
 
-/* Onderste deel */
-.day-25 { left: 37.5%; top: 75%; }
-.day-26 { left: 50%;   top: 75%; }
-.day-27 { left: 37.5%; top: 87.5%; }
-.day-28 { left: 50%;   top: 87.5%; }
-.day-29 { left: 37.5%; top: 100%; }
-.day-30 { left: 50%;   top: 100%; }
-.day-31 { left: 37.5%; top: 112.5%; }
+.day-7 { left: 204px; top: 204px; }
+.day-8 { left: 272px; top: 204px; }
 
-/* Legenda — komt pas na de extra ruimte onder de kruisen */
+/* Middenarm */
+.day-9  { left: 0px;   top: 272px; }
+.day-10 { left: 68px;  top: 272px; }
+.day-11 { left: 136px; top: 272px; }
+.day-12 { left: 204px; top: 272px; }
+.day-13 { left: 272px; top: 272px; }
+.day-14 { left: 340px; top: 272px; }
+.day-15 { left: 408px; top: 272px; }
+.day-16 { left: 476px; top: 272px; }
+
+.day-17 { left: 0px;   top: 340px; }
+.day-18 { left: 68px;  top: 340px; }
+.day-19 { left: 136px; top: 340px; }
+.day-20 { left: 204px; top: 340px; }
+.day-21 { left: 272px; top: 340px; }
+.day-22 { left: 340px; top: 340px; }
+.day-23 { left: 408px; top: 340px; }
+.day-24 { left: 476px; top: 340px; }
+
+/* Onderarm */
+.day-25 { left: 204px; top: 408px; }
+.day-26 { left: 272px; top: 408px; }
+
+.day-27 { left: 204px; top: 476px; }
+.day-28 { left: 272px; top: 476px; }
+
+.day-29 { left: 204px; top: 544px; }
+.day-30 { left: 272px; top: 544px; }
+
+.day-31 { left: 204px; top: 612px; }
+
 .legend {
+  position: absolute;
+  bottom: 72px;
+  left: 0;
+  width: 1920px;
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 18px;
-  margin-top: 20px;
+  gap: 65px;
   color: #ffffff;
-  font-size: clamp(11px, 1.3vw, 18px);
+  font-size: 24px;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 12px;
+  line-height: 1.15;
 }
 
 .legend-box {
-  width: 18px;
-  height: 18px;
-  border: 1px solid #ffffff;
+  width: 28px;
+  height: 28px;
+  border: 2px solid #ffffff;
+  flex: 0 0 auto;
 }
 
 .legend-box.green {
@@ -177,52 +198,70 @@ body {
   background: #ffffff;
 }
 
-.info {
-  text-align: center;
-  margin-top: 25px;
-  color: #ffffff;
-  font-size: clamp(11px, 1.3vw, 18px);
+.legend small {
+  font-size: 18px;
   opacity: 0.9;
+}
+
+.info {
+  position: absolute;
+  bottom: 25px;
+  left: 0;
+  width: 1920px;
+  text-align: center;
+  color: #ffffff;
+  font-size: 20px;
+  opacity: 0.9;
+}
+
+.info small {
+  font-size: 16px;
 }
 </style>
 </head>
 
 <body>
 
-<h1 class="page-title">SAFETY CROSS — 3 MAANDEN</h1>
+<div id="screen">
 
-<div id="crosses" class="crosses"></div>
+  <h1 class="page-title">SAFETY CROSS — 3 MAANDEN</h1>
 
-<div class="legend">
-  <div class="legend-item">
-    <span class="legend-box green"></span>
-    <span>Geen incident<br><small>Pas d’incident</small></span>
+  <div id="crosses" class="crosses"></div>
+
+  <div class="legend">
+    <div class="legend-item">
+      <span class="legend-box green"></span>
+      <span>
+        Geen incident<br>
+        <small>Pas d’incident</small>
+      </span>
+    </div>
+
+    <div class="legend-item">
+      <span class="legend-box red"></span>
+      <span>
+        Incident<br>
+        <small>Incident</small>
+      </span>
+    </div>
+
+    <div class="legend-item">
+      <span class="legend-box future"></span>
+      <span>
+        Toekomstige dag<br>
+        <small>Jour à venir</small>
+      </span>
+    </div>
   </div>
 
-  <div class="legend-item">
-    <span class="legend-box red"></span>
-    <span>Incident<br><small>Incident</small></span>
+  <div class="info">
+    Elke gepasseerde dag zonder incident wordt automatisch groen.<br>
+    <small>Chaque jour écoulé sans incident devient automatiquement vert.</small>
   </div>
 
-  <div class="legend-item">
-    <span class="legend-box future"></span>
-    <span>Toekomstige dag<br><small>Jour à venir</small></span>
-  </div>
-</div>
-
-<div class="info">
-  Elke gepasseerde dag zonder incident wordt automatisch groen.<br>
-  <small>Chaque jour écoulé sans incident devient automatiquement vert.</small>
 </div>
 
 <script>
-/*
-  Incidenten invoeren:
-  month: januari = 0, februari = 1, maart = 2, april = 3,
-  mei = 4, juni = 5, juli = 6, augustus = 7, enzovoort.
-
-  13 juni 2026 staat hieronder als incident en wordt rood.
-*/
 const incidentDays = [
   { year: 2026, month: 5, day: 13 }
 ];
@@ -233,13 +272,23 @@ const monthNames = [
   "september", "oktober", "november", "december"
 ];
 
+function scaleScreen() {
+  const screen = document.getElementById("screen");
+  const scale = Math.min(
+    window.innerWidth / 1920,
+    window.innerHeight / 1080
+  );
+
+  screen.style.transform = "scale(" + scale + ")";
+  screen.style.left = ((window.innerWidth - 1920 * scale) / 2) + "px";
+  screen.style.top = ((window.innerHeight - 1080 * scale) / 2) + "px";
+}
+
 function isIncident(year, month, day) {
   return incidentDays.some(function (incident) {
-    return (
-      incident.year === year &&
+    return incident.year === year &&
       incident.month === month &&
-      incident.day === day
-    );
+      incident.day === day;
   });
 }
 
@@ -247,79 +296,70 @@ function getDaysInMonth(year, month) {
   return new Date(year, month + 1, 0).getDate();
 }
 
-function getThreeMonths() {
-  const today = new Date();
-  const result = [];
-
-  for (let offset = 2; offset >= 0; offset--) {
-    const date = new Date(
-      today.getFullYear(),
-      today.getMonth() - offset,
-      1
-    );
-
-    result.push({
-      year: date.getFullYear(),
-      month: date.getMonth()
-    });
-  }
-
-  return result;
-}
-
 function dayStatus(year, month, day) {
   if (isIncident(year, month, day)) {
     return "red";
   }
 
-  const today = new Date();
-
-  const dateToCheck = new Date(year, month, day);
-  const todayOnly = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate()
+  const now = new Date();
+  const today = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
   );
 
-  if (dateToCheck > todayOnly) {
-    return "future";
+  const checkDate = new Date(year, month, day);
+
+  return checkDate > today ? "future" : "green";
+}
+
+function getThreeMonths() {
+  const now = new Date();
+  const months = [];
+
+  for (let offset = 2; offset >= 0; offset--) {
+    const date = new Date(
+      now.getFullYear(),
+      now.getMonth() - offset,
+      1
+    );
+
+    months.push({
+      year: date.getFullYear(),
+      month: date.getMonth()
+    });
   }
 
-  return "green";
+  return months;
 }
 
 function createMonth(year, month) {
-  const wrapper = document.createElement("div");
-  wrapper.className = "month-card";
+  const card = document.createElement("div");
+  card.className = "month-card";
 
   const title = document.createElement("div");
   title.className = "month-title";
   title.textContent = monthNames[month] + " " + year;
 
-  const area = document.createElement("div");
-  area.className = "cross-area";
+  const cross = document.createElement("div");
+  cross.className = "cross-area";
 
   const daysInMonth = getDaysInMonth(year, month);
 
   for (let day = 1; day <= daysInMonth; day++) {
     const box = document.createElement("div");
-
-    box.className =
-      "day day-" + day + " " + dayStatus(year, month, day);
-
+    box.className = "day day-" + day + " " + dayStatus(year, month, day);
     box.textContent = day;
-    box.title = day + " " + monthNames[month] + " " + year;
-
-    area.appendChild(box);
+    cross.appendChild(box);
   }
 
-  wrapper.appendChild(title);
-  wrapper.appendChild(area);
+  card.appendChild(title);
+  card.appendChild(cross);
 
-  return wrapper;
+  return card;
 }
 
-function render() {
+function renderCrosses() {
   const container = document.getElementById("crosses");
   container.innerHTML = "";
 
@@ -328,12 +368,12 @@ function render() {
   });
 }
 
-render();
+renderCrosses();
+scaleScreen();
 
-/* Controleert elke minuut of een nieuwe dag begonnen is. */
-setInterval(render, 60000);
+window.addEventListener("resize", scaleScreen);
+setInterval(renderCrosses, 60000);
 </script>
 
 </body>
 </html>
-t
