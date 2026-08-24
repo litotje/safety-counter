@@ -43,14 +43,14 @@ body {
 }
 .cross {
   position: relative;
-  width: 280px;
-  height: 280px;
+  width: 300px;
+  height: 300px;
 }
 .segment {
   position: absolute;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -71,6 +71,7 @@ body {
 }
 .segment.today {
   border: 3px solid #FFD700;
+  box-sizing: border-box;
 }
 .legend {
   margin-top: 30px;
@@ -86,7 +87,7 @@ body {
 .legend-box {
   width: 30px;
   height: 30px;
-  border-radius: 50%;
+  border-radius: 5px;
 }
 .legend-box.green { background: #22c55e; }
 .legend-box.red { background: #ef4444; }
@@ -125,8 +126,7 @@ body {
 <script>
 // === CONFIGURATIE: Pas hier accident dagen aan ===
 const accidentDays = [
-  // Voorbeeld: 20 augustus 2026
-  // { year: 2026, month: 7, day: 20 },
+  { year: 2026, month: 5, day: 13 },  // 13 juni 2026
 ];
 // ==========================================
 
@@ -155,16 +155,36 @@ function createCross(year, month) {
       <div class="cross">
   `;
   
-  const centerX = 140;
-  const centerY = 140;
-  const radius = 100;
-  const startAngle = -90; // Start at top (12 o'clock)
+  const centerX = 150;
+  const centerY = 150;
+  const armLength = 110;
+  const spacing = 40;
   
   for (let day = 1; day <= daysInMonth; day++) {
-    const angle = startAngle + (360 / daysInMonth) * (day - 1);
-    const radian = angle * Math.PI / 180;
-    const x = centerX + radius * Math.cos(radian);
-    const y = centerY + radius * Math.sin(radian);
+    let x, y;
+    
+    if (day <= 7) {
+      // Top arm (vertical, going up)
+      x = centerX;
+      y = centerY - spacing * (7 - day);
+    } else if (day <= 14) {
+      // Right arm (horizontal, going right)
+      x = centerX + spacing * (day - 7);
+      y = centerY;
+    } else if (day <= 21) {
+      // Bottom arm (vertical, going down)
+      x = centerX;
+      y = centerY + spacing * (day - 14);
+    } else if (day <= 28) {
+      // Left arm (horizontal, going left)
+      x = centerX - spacing * (day - 21);
+      y = centerY;
+    } else {
+      // Extra days (29-31) - center area
+      const extra = day - 28;
+      x = centerX + spacing * (extra - 2);
+      y = centerY + spacing;
+    }
     
     let className = 'segment';
     
@@ -196,7 +216,6 @@ function createSafetyCross() {
   
   const months = [];
   
-  // Get last 3 months (current month + 2 months before)
   for (let i = 2; i >= 0; i--) {
     let month = currentMonth - i;
     let year = currentYear;
