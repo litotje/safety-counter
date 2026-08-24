@@ -288,7 +288,7 @@ const incidentDays = [
   = 20 augustus 2026.
 */
 const nearMissDays = [
-   { year: 2026, month: 7, day: 20 } 
+  /* { year: 2026, month: 7, day: 20 } */
 ];
 
 const monthNames = [
@@ -352,24 +352,16 @@ function dayStatus(year, month, day) {
   return checkDate > today ? "future" : "green";
 }
 
+/*
+  Vaste drie maanden: juni, juli, augustus 2026.
+  Volgorde op scherm: juni – juli – augustus.
+*/
 function getThreeMonths() {
-  const now = new Date();
-  const months = [];
-
-  for (let offset = 2; offset >= 0; offset--) {
-    const date = new Date(
-      now.getFullYear(),
-      now.getMonth() - offset,
-      1
-    );
-
-    months.push({
-      year: date.getFullYear(),
-      month: date.getMonth()
-    });
-  }
-
-  return months;
+  return [
+    { year: 2026, month: 5 },  // juni
+    { year: 2026, month: 6 },  // juli
+    { year: 2026, month: 7 }   // augustus
+  ];
 }
 
 function createMonth(year, month) {
@@ -416,5 +408,7 @@ window.addEventListener("resize", scaleScreen);
 setInterval(renderCrosses, 60000);
 </script>
 
+</body>
+</html>
 </body>
 </html>
