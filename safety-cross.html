@@ -353,15 +353,24 @@ function dayStatus(year, month, day) {
 }
 
 /*
-  Vaste drie maanden: juni, juli, augustus 2026.
-  Volgorde op scherm: juni – juli – augustus.
+  Drie opeenvolgende maanden:
+  huidige maand - 2, huidige maand - 1, huidige maand.
+  Met correcte jaargrens.
 */
 function getThreeMonths() {
-  return [
-    { year: 2026, month: 5 },  // juni
-    { year: 2026, month: 6 },  // juli
-    { year: 2026, month: 7 }   // augustus
-  ];
+  const now = new Date();
+  const months = [];
+
+  for (let offset = 2; offset >= 0; offset--) {
+    const totalMonths = now.getFullYear() * 12 + now.getMonth() - offset;
+
+    const year = Math.floor(totalMonths / 12);
+    const month = totalMonths % 12;
+
+    months.push({ year: year, month: month });
+  }
+
+  return months;
 }
 
 function createMonth(year, month) {
