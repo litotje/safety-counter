@@ -349,7 +349,12 @@ function dayStatus(year, month, day) {
 
   const checkDate = new Date(year, month, day);
 
-  return checkDate > today ? "future" : "green";
+  // Alleen dagen vóór vandaag worden groen.
+  // Vandaag en toekomst = wit (future).
+  if (checkDate >= today) {
+    return "future";
+  }
+
 }
 
 /*
